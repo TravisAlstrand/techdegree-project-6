@@ -4,6 +4,8 @@ const keysDiv = document.getElementById('qwerty');
 const phraseDiv = document.getElementById('phrase');
 const phraseUL = phraseDiv.firstElementChild;
 const startBtn = document.querySelector('.btn__reset');
+const scoreDiv = document.getElementById('scoreboard');
+const scoreOL = scoreDiv.firstElementChild;
 
 // counter for missed guesses
 let missedGuess = 0;
@@ -21,11 +23,12 @@ const phrases = [
 // listen for click on start button, hide welcome div, call a random phrase
 startBtn.addEventListener('click', () => {
         welcomeScreen.style.display = "none";
-        getRandomPhrase(phrases);
+        getRandomPhraseAsArray(phrases);
 });
 
 // get a random phrase index from phrases array
-function getRandomPhrase(arr) {
+function getRandomPhraseAsArray(arr) 
+{
     const randomPhrase = Math.floor(Math.random() * arr.length);
 
     // create new array from characters of the index's string
@@ -34,12 +37,13 @@ function getRandomPhrase(arr) {
 }
 
 // createLI and display it on screen
-function addPhraseToDisplay(arr) {
+function addPhraseToDisplay(arr) 
+{
     arr.forEach(text => {
         const li = document.createElement('li');
         li.textContent = text;
 
-        if (element === " ") {
+        if (text === " ") {
             li.className = "space";
         } else {
             li.className = "letter";
@@ -47,4 +51,50 @@ function addPhraseToDisplay(arr) {
 
         phraseUL.appendChild(li);
     });
+}
+
+// listen for screen keyboard button click
+// if guess is wrong, increment counter & remove heart
+keysDiv.addEventListener('click', (e) => {
+    if (e.target.tagName === "BUTTON" && e.target.className !== "chosen") 
+    {
+        e.target.className = "chosen";
+        e.target.disabled = true;
+        const matchResults = checkLetter(e.target);
+
+        // check if the letter clicked matches a letter in phrase
+        // show letter in phrase if so
+        function checkLetter (btn) 
+        {
+            const letterLIs = phraseUL.children;
+            let letterFound = null;
+
+            for (i = 0; i < letterLIs.length; i++) 
+            {
+                if (btn.textContent === letterLIs[i].textContent) 
+                {
+                    letterLIs[i].className = "show";
+                    letterFound += btn.textContent;
+                }
+            }
+            return letterFound;
+        }
+            
+        if (matchResults === null)
+        {
+            removeHeart();
+            missedGuess++;
+            console.log(matchResults);
+            console.log(missedGuess);
+        }
+    }
+});
+
+// remove heart li and add empty heart li
+function removeHeart()
+{
+    scoreOL.removeChild(scoreOL.firstChild);
+    const lostHeart = document.createElement('li');
+    scoreOL.append(lostHeart);
+    lostHeart.insertAdjacentHTML("afterbegin", '<img src="images/lostHeart.png" height="35px" width="30px"></img>');
 }
