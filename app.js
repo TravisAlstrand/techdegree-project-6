@@ -61,6 +61,7 @@ keysDiv.addEventListener('click', (e) => {
         e.target.className = "chosen";
         e.target.disabled = true;
         const matchResults = checkLetter(e.target);
+        const hearts = document.querySelectorAll('.tries img');
 
         // check if the letter clicked matches a letter in phrase
         // show letter in phrase if so
@@ -82,19 +83,10 @@ keysDiv.addEventListener('click', (e) => {
             
         if (matchResults === null)
         {
-            removeHeart();
             missedGuess++;
+            hearts[missedGuess - 1].src = "images/lostHeart.png";
             console.log(matchResults);
             console.log(missedGuess);
         }
     }
 });
-
-// remove heart li and add empty heart li
-function removeHeart()
-{
-    scoreOL.removeChild(scoreOL.firstChild);
-    const lostHeart = document.createElement('li');
-    scoreOL.append(lostHeart);
-    lostHeart.insertAdjacentHTML("afterbegin", '<img src="images/lostHeart.png" height="35px" width="30px"></img>');
-}
