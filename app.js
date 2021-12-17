@@ -35,33 +35,16 @@ function getRandomPhrase(arr) {
 
 // createLI and display it on screen
 function addPhraseToDisplay(arr) {
-    arr.forEach(element => {
-        const text = element.textContent;
+    arr.forEach(text => {
         const li = document.createElement('li');
         li.textContent = text;
 
-        if (text === " ") {
+        if (element === " ") {
             li.className = "space";
         } else {
-            li.className = "show";
+            li.className = "letter";
         }
 
         phraseUL.appendChild(li);
     });
 }
-
-
-
-// for (i = 0; i < arr.length; i++) {
-//     const current = arr[i];
-//     const text = current.textContent;
-//     const li = document.createElement('li');
-//     li.textContent = text;
-
-//     if (text === " ") {
-//         li.className = "space";
-//     } else {
-//         li.className = "letter";
-//     }
-//     phraseDiv.appendChild(li);
-// }
